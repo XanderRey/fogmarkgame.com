@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Fogmark save bridge</title>
+</head>
+<body>
+<script>
+// Keeps a copy of the browser game's saves for it. itch.io puts each new
+// upload of a game at a new web address, and a browser keeps a site's storage
+// per address, so a new build starts empty. This page always lives here, so
+// the copy it keeps (in this browser only; nothing is sent anywhere) is there
+// for the next build to take back. Only Fogmark's own hosts may talk to it.
+(function () {
+	var ALLOWED = /^(https:\/\/([a-z0-9-]+\.)*(itch\.zone|itch\.io|hwcdn\.net)|http:\/\/localhost(:\d+)?)$/;
+	var PREFIX = "fogmark_file:";
+	window.addEventListener("message", function (e) {
+		if (!ALLOWED.test(e.origin)) return;
+		var m = e.data || {};
+		try {
+			if (m.type === "save" && typeof m.key === "string" && typeof m.value === "string") {
+				localStorage.setItem(PREFIX + m.key, m.value);
+			} else if (m.type === "remove" && typeof m.key === "string") {
+				localStorage.removeItem(PREFIX + m.key);
+			} else if (m.type === "load") {
+				var files = {};
+				for (var i = 0; i < localStorage.length; i++) {
+					var k = localStorage.key(i);
+					if (k.indexOf(PREFIX) === 0) files[k.slice(PREFIX.length)] = localStorage.getItem(k);
+				}
+				e.source.postMessage({ type: "fogmark-saves", files: files }, e.origin);
+			}
+		} catch (err) {
+			if (m.type === "load") e.source.postMessage({ type: "fogmark-saves", files: {}, error: String(err) }, e.origin);
+		}
+	});
+	if (window.parent !== window) window.parent.postMessage({ type: "fogmark-bridge-ready" }, "*");
+})();
+</script>
+</body>
+</html>
