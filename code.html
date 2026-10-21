@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A Fogmark code</title>
 <meta name="description" content="A friend shared their Fogmark island. Copy the code and enter it in the game.">
-<meta property="og:title" content="A friend shared their Fogmark island">
-<meta property="og:description" content="Copy the code, then open Fogmark and enter it to chart the same island, visit theirs or race their times.">
+<meta property="og:title" content="A friend shared something from Fogmark">
+<meta property="og:description" content="Copy the code, then open Fogmark and enter it: play the puzzle they drew, chart the same island, visit theirs or race their times.">
 <meta property="og:image" content="https://fogmarkgame.com/img/share.jpg">
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.png">
@@ -23,7 +23,7 @@
 <body>
 <main class="doc">
   <img src="img/logo.png" alt="Fogmark" style="width:min(320px,70vw);image-rendering:pixelated;margin:0 auto 18px">
-  <h1 id="title">A friend shared their island</h1>
+  <h1 id="title">A friend shared something from Fogmark</h1>
   <div id="codes"></div>
   <button class="button" id="copy" type="button">Copy the code</button>
   <p id="copied" class="muted"></p>
@@ -32,7 +32,7 @@
   <ol>
     <li>Copy the code above (or the whole message).</li>
     <li>Open Fogmark and choose <strong>Enter a friend's code</strong> on the title screen.</li>
-    <li>Tap <strong>Paste</strong>. A seed code charts the same puzzles so you can race; an Atlas code visits their island. Times come along with it.</li>
+    <li>Tap <strong>Paste</strong>. A puzzle code plays the picture they drew; a seed code charts the same island so you can race; an Atlas code visits their island.</li>
   </ol>
   <p class="muted">To race on the island you're already playing, paste it in <strong>Journal → Times</strong> instead.</p>
 
@@ -56,7 +56,7 @@
   codes.forEach(function (c) {
     var kind = document.createElement('p');
     kind.className = 'kind';
-    kind.textContent = c.replace(/-/g, '').length <= 12 ? 'Seed code: chart an island like theirs' : 'Atlas or times code';
+    kind.textContent = c.replace(/-/g, '').length <= 12 ? 'Seed code: chart an island like theirs' : 'A puzzle, Atlas or times code';
     var el = document.createElement('div');
     el.className = 'code';
     el.textContent = c;
